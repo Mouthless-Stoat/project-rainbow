@@ -6,20 +6,23 @@ func on_card_played(
 ) -> void:
 	if played_card == attached_card:
 		return
-		
-	var attached_pos := get_pos(attached_card.id)
-		
-	if attached_pos.y != pos.y:
+		 
+	if get_pos().y != pos.y:
 		return
 	
-	flip_h = attached_pos.x > pos.x
+	flip_h = get_pos().x > pos.x
 	
-	var direction := Vector2i.RIGHT if attached_pos.x > pos.x else Vector2i.LEFT
+	var direction := Vector2i.RIGHT if get_pos().x > pos.x else Vector2i.LEFT
 	
+	#This checks to the left or right of the played card
 	for slot in fight_manager.board_manager.get_active_row(true):
 		pos += direction
-		if pos == attached_pos:
+		
+		# Safety Break, so it doesn't go backwards
+		if pos == get_pos():
 			break
+		
+		#checks for the closest empty space
 		elif fight_manager.board_manager.is_slot_empty(pos):
 			move_card(attached_card.id, pos)
 			break
