@@ -42,11 +42,14 @@ func _on_room_joined(players_: Array[ConnectionManager.Player], host_uuid_: Stri
 	add_player(ConnectionManager.Player.new(Global.player_name, Global.pfp, Global.uuid))
 
 
+@export var title_path: String = "res://packed/title_screen.tscn"
+
+
 func _on_room_closed() -> void:
 	for n in %PlayerList.get_children():
 		%PlayerList.remove_child(n)
 		n.queue_free()
-	%Lobby.visible = false
+	get_tree().change_scene_to_file(title_path)
 
 
 func _on_player_joined(player: ConnectionManager.Player) -> void:

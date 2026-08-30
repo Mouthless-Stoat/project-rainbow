@@ -16,6 +16,7 @@ func _ready() -> void:
 	add_child(watcher)
 
 
+
 func _fs_changed(_files: PackedStringArray) -> void:
 	_on_ruleset_changed(Global.ruleset)
 
@@ -130,8 +131,11 @@ func _on_bk_btn_pressed() -> void:
 	_on_load_btn_pressed()
 
 
+@export var deck_editor_path: String = "res://packed/deck_editor.tscn"
+
+
 func _on_load_btn_pressed() -> void:
-	%DeckEditor.visible = true
+	get_tree().change_scene_to_file(deck_editor_path)
 	%DeckEditor.load_deck(selected_listing.deck_dict)
 	$PopupBlocker.visible = false
 
@@ -179,3 +183,7 @@ func _on_file_selected(path: String) -> void:
 	)
 	var deck_dict := JSON.stringify(dict)
 	deck_file.store_string(deck_dict)
+
+
+func _on_add_file_btn_pressed() -> void:
+	$FileDialog.visible = true
