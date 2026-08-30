@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://brlfgkak8171j"]
+
+[ext_resource type="Script" uid="uid://srydxdh4voto" path="res://scripts/utils/global_popup.gd" id="1_7nxoj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uu6xs"]
+bg_color = Color(0, 0, 0, 0.27450982)
+
+[node name="PopupBlocker" type="PanelContainer" unique_id=1915700884]
+z_index = 100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uu6xs")
+script = ExtResource("1_7nxoj")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=919919130]
+layout_mode = 2
+
+[node name="Popup" type="PanelContainer" parent="CenterContainer" unique_id=2129489]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Popup" unique_id=318114029]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="CenterContainer/Popup/VBoxContainer" unique_id=1090029138]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "ERROR"
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/Popup/VBoxContainer" unique_id=1530622119]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Text" type="Label" parent="CenterContainer/Popup/VBoxContainer/CenterContainer" unique_id=1513504009]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Bad shit happened :("
+
+[node name="ClosePopupBtn" type="Button" parent="CenterContainer/Popup/VBoxContainer" unique_id=462693928]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Close"
+
+[connection signal="pressed" from="CenterContainer/Popup/VBoxContainer/ClosePopupBtn" to="." method="_on_button_pressed"]

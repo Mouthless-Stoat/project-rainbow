@@ -1,0 +1,316 @@
+[gd_scene format=3 uid="uid://beekol8sqd3b1"]
+
+[ext_resource type="Script" uid="uid://btqyrkhyrycih" path="res://scripts/title.gd" id="1_m08to"]
+[ext_resource type="PackedScene" uid="uid://dwhmym7riy2eo" path="res://prefab/separator.tscn" id="2_oyvtw"]
+[ext_resource type="Script" uid="uid://ccuyd8bprftvj" path="res://scripts/utils/ui_control_btn.gd" id="3_igvdp"]
+[ext_resource type="Script" uid="uid://c8fr4jh252yau" path="res://packed/host_setting.gd" id="4_igvdp"]
+[ext_resource type="Script" uid="uid://d3uwr4llm0vh0" path="res://packed/join_setting.gd" id="4_oyvtw"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_fos0i"]
+color = Color(0.12941177, 0.47843137, 0.84705883, 1)
+grow_end = -4.0
+thickness = 4
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_3dxm6"]
+color = Color(0.12941177, 0.47843137, 0.84705883, 1)
+grow_begin = -4.0
+thickness = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m08to"]
+bg_color = Color(0, 0, 0, 0.5647059)
+
+[node name="TitleScreen" type="PanelContainer" unique_id=1891624883]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_m08to")
+lobby_path = "res://packed/lobby.tscn"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=746547806]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=582572639]
+layout_mode = 2
+
+[node name="Separator" parent="VBoxContainer/HBoxContainer2" unique_id=444231581 instance=ExtResource("2_oyvtw")]
+custom_minimum_size = Vector2(0, 13)
+layout_mode = 2
+
+[node name="OfflineIndicator" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=814778681]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.3977014, 0.3292555, 1)
+theme_override_font_sizes/font_size = 16
+text = "OFFLINE"
+
+[node name="Spacer" type="Control" parent="VBoxContainer" unique_id=348193121]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=67782924]
+layout_mode = 2
+theme_override_font_sizes/font_size = 96
+text = "Project Rainbow"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=627793528]
+layout_mode = 2
+
+[node name="Line" type="HSeparator" parent="VBoxContainer/HBoxContainer" unique_id=1600230111]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxLine_fos0i")
+
+[node name="SubTitle" type="RichTextLabel" parent="VBoxContainer/HBoxContainer" unique_id=1313014563]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "[wave][rainbow freq=0.1 speed=6]Happy Pride Month"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Line2" type="HSeparator" parent="VBoxContainer/HBoxContainer" unique_id=1175269870]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxLine_3dxm6")
+
+[node name="Spacer2" type="Control" parent="VBoxContainer" unique_id=588252547]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="HostSettingBtn" type="Button" parent="VBoxContainer" unique_id=641582573]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+text = "- HOST GAME -"
+
+[node name="JoinSettingBtn" type="Button" parent="VBoxContainer" unique_id=437836759]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+text = "- JOIN GAME -"
+
+[node name="DeckBtn" type="Button" parent="VBoxContainer" unique_id=634648779]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+text = "- DECK LIBRARY -"
+script = ExtResource("3_igvdp")
+scene_path_to_load = "res://packed/deck_library.tscn"
+
+[node name="RulesetBtn" type="Button" parent="VBoxContainer" unique_id=210892815]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+text = "- RULESET SELECTOR -"
+script = ExtResource("3_igvdp")
+scene_path_to_load = "res://packed/ruleset_selector.tscn"
+
+[node name="CreditBtn" type="Button" parent="VBoxContainer" unique_id=1215073031]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+text = "- CREDIT -"
+
+[node name="QuitBtn" type="Button" parent="VBoxContainer" unique_id=1043539505]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+text = "- QUIT GAME -"
+
+[node name="Control" type="Control" parent="VBoxContainer" unique_id=1213110138]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer" unique_id=1719918234]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="RulesetLb" type="Label" parent="VBoxContainer/HBoxContainer3" unique_id=2037892594]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "This game uses Pride versioning"
+mouse_filter = 1
+text = "IMF COMPETIVE"
+vertical_alignment = 1
+
+[node name="Separator" parent="VBoxContainer/HBoxContainer3" unique_id=721297659 instance=ExtResource("2_oyvtw")]
+layout_mode = 2
+
+[node name="VersionLb" type="Label" parent="VBoxContainer/HBoxContainer3" unique_id=632261854]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "This game uses Pride versioning"
+mouse_filter = 1
+text = "v1.0.0"
+vertical_alignment = 1
+
+[node name="HostSetting" type="PanelContainer" parent="." unique_id=1422352263]
+visible = false
+z_index = 10
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_m08to")
+script = ExtResource("4_igvdp")
+
+[node name="CenterContainer" type="CenterContainer" parent="HostSetting" unique_id=130611297]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HostSetting/CenterContainer" unique_id=1260505447]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
+theme_type_variation = &"BasicPopup"
+
+[node name="MarginContainer" type="MarginContainer" parent="HostSetting/CenterContainer/PanelContainer" unique_id=172665025]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HostSetting/CenterContainer/PanelContainer/MarginContainer" unique_id=350030496]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=806787969]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "--- HOST OPTION ---"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1237004233]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="GridContainer" parent="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1423149802]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1847375483]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Player Name: "
+
+[node name="HostPlayerName" type="LineEdit" parent="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=394099263]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Host"
+
+[node name="Label2" type="Label" parent="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=485745247]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Player Name: "
+
+[node name="HostPlayerName2" type="LineEdit" parent="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=88689238]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Your Name"
+
+[node name="Spacer2" type="Control" parent="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=621105087]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HostBtn" type="Button" parent="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=580896856]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+text = "- HOST -"
+script = ExtResource("3_igvdp")
+scene_path_to_load = "res://packed/lobby.tscn"
+
+[node name="HostCloseBtn" type="Button" parent="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=958328113]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+text = "- CLOSE -"
+
+[node name="JoinSetting" type="PanelContainer" parent="." unique_id=648973180]
+visible = false
+z_index = 20
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_m08to")
+script = ExtResource("4_oyvtw")
+
+[node name="CenterContainer" type="CenterContainer" parent="JoinSetting" unique_id=1232879961]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="JoinSetting/CenterContainer" unique_id=964196663]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
+theme_type_variation = &"BasicPopup"
+
+[node name="MarginContainer" type="MarginContainer" parent="JoinSetting/CenterContainer/PanelContainer" unique_id=2025164315]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="JoinSetting/CenterContainer/PanelContainer/MarginContainer" unique_id=1268873050]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1568533406]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "--- JOIN OPTION ---"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=829011827]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="GridContainer" parent="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1845511718]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=206823988]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Player Name: "
+
+[node name="JoinPlayerName" type="LineEdit" parent="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=578658354]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Guest"
+
+[node name="Label2" type="Label" parent="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=238707065]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Room Code:"
+
+[node name="JoinRoomCode" type="LineEdit" parent="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=402060586]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+placeholder_text = "Room Code"
+
+[node name="Spacer2" type="Control" parent="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=695309642]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="JoinBtn" type="Button" parent="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=545032104]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+theme_override_font_sizes/font_size = 32
+text = "- JOIN -"
+
+[node name="CloseBtn" type="Button" parent="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=439116377]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+text = "- CLOSE -"
+
+[connection signal="pressed" from="VBoxContainer/HostSettingBtn" to="." method="_on_host_setting_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/JoinSettingBtn" to="." method="_on_join_setting_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitBtn" to="." method="_on_quit_btn_pressed"]
+[connection signal="pressed" from="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HostBtn" to="." method="_on_host_btn_pressed"]
+[connection signal="pressed" from="HostSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HostCloseBtn" to="HostSetting" method="_on_host_close_btn_pressed"]
+[connection signal="pressed" from="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/JoinBtn" to="." method="_on_join_btn_pressed"]
+[connection signal="pressed" from="JoinSetting/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CloseBtn" to="JoinSetting" method="_on_close_btn_pressed"]
