@@ -1,8 +1,6 @@
 extends Button
 
-@export var ui: Node
-@export var make_visible: bool = true
-
+@export var scene_path_to_load: String
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -10,4 +8,4 @@ func _ready() -> void:
 
 
 func _on_pressed() -> void:
-	ui.visible = make_visible
+	get_tree().change_scene_to_file(scene_path_to_load)
