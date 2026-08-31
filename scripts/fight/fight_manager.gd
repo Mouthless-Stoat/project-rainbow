@@ -56,14 +56,14 @@ class Deck:
 
 var deck: Deck
 var main_deck: Array[Ruleset.CardData] = [
-	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["True Scholar"]}),
+	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Detonator", "True Scholar"]}),
 	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Blue Mox"]}),
-	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Sniper"]}),
-	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Bone King"]}),
-	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Bone King"]}),
+	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Detonator","Sniper"]}),
+	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 23, sigils = ["Bone King"]}),
+	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Detonator", "Touch of Death"]}),
 ]
 var side_deck: Array[Ruleset.CardData] = [
-	Ruleset.CardData.new({name = "Greater Smoke", attack = 1, health = 1, sigils = ["Bone King"]}),
+	Ruleset.CardData.new({name = "Greater Smoke", attack = 1, health = 1, sigils = ["Detonator","Bone King"]}),
 ]
 
 
