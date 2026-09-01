@@ -226,7 +226,7 @@ func _on_slot_selected(slot: BoardManager.Slot) -> void:
 		if card.costs.bone != 0:
 			actions.push_front(ChangeBonesAction.new(-card.costs.bone as int, Global.uuid))
 		if card.costs.cell != 0:
-			actions.push_front(ChangeCellsAction.new(-card.costs.cell as int, Global.uuid, false))
+			actions.push_front(ChangeCellsAction.new(-card.costs.cell as int, Global.uuid))
 		if card.costs.energy != 0:
 			actions.push_front(ChangeEnergyAction.new(-card.costs.energy as int, Global.uuid))
 
