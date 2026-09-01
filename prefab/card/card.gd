@@ -63,14 +63,48 @@ class Costs:
 				return {}
 		)
 
+	func get_sort_key() -> Array:
+		var color_count := 0
+
+		if mox.green > 0:
+			color_count += 1
+		if mox.orange > 0:
+			color_count += 1
+		if mox.blue > 0:
+			color_count += 1
+
+		var t := [
+			blood,
+			bone,
+			energy,
+			cell,
+			[
+				color_count,
+				int(mox.green == 0),
+				int(mox.orange == 0),
+				int(mox.blue == 0),
+				mox.green,
+				mox.orange,
+				mox.blue
+			]
+		]
+		t.reverse()
+		return t
+
+	func is_less(other: Costs) -> bool:
+		return get_sort_key() < other.get_sort_key()
+
+
+var is_db_card := false:
+	set(new):
+		is_db_card = new
+		redraw_card()
 
 var card_data: Ruleset.CardData:
 	set(new_data):
 		parse_data(new_data)
 		card_data = new_data
 		redraw_card()
-	get:
-		return card_data
 
 var zone := Zone.LIMBO:
 	set(new):
@@ -99,7 +133,8 @@ func _update_buf() -> void:
 
 
 # These are just extracted out of the card_data for type safety
-## The attack of the card, if you want to temporarily buff the card use [member attack_mod]
+## The attack of the card, if you want to temporarily buff the card use [member attack_buf] or
+## [member slot_attack_buf]
 var attack: int:
 	set(new):
 		attack = new
@@ -142,8 +177,9 @@ var card_name: String:
 
 var parsing_data := false
 
-@onready var sac_marker: TextureRect = %SacMarker
-@onready var submerge_overlay: TextureRect = %SubmergeOverlay
+@onready var sac_marker: TextureRect = $SacMarker
+@onready var submerge_overlay: TextureRect = $SubmergeOverlay
+@onready var banned_overlay: TextureRect = $BanOverlay
 
 
 func blood_value() -> int:
@@ -203,13 +239,7 @@ func parse_data(data: Ruleset.CardData, show_warning := false) -> void:
 		data.tribes.map(func(t: String) -> Ruleset.Tribe: return Global.ruleset.tribes[t])
 	)
 
-	var c := Costs.new()
-	c.bone = data.costs.bone
-	c.blood = data.costs.blood
-	c.energy = data.costs.energy
-	c.cell = data.costs.cell
-
-	costs = c
+	costs = data.costs
 	tokens = data.tokens
 	card_name = data.name
 	parsing_data = false
@@ -220,6 +250,7 @@ func redraw_card() -> void:
 	if parsing_data:
 		return
 	$SacMarker.visible = false
+	$BanOverlay.visible = card_data.banned and is_db_card
 	%Name.text = card_name
 
 	var portrait_path := "res://asset/portraits/%s.png" % card_name
@@ -232,7 +263,18 @@ func redraw_card() -> void:
 		%Portrait.texture = load("res://asset/portraits/MISSING.png")
 
 	%Frame.texture = temple.frame[rarity.name]
+
+	%RarityDecoration.texture = rarity.decoration.card
+
 	%Temple.texture = temple.icon
+
+	for n in %TribesContainer.get_children():
+		%TribesContainer.remove_child(n)
+		n.queue_free()
+	for tribe in tribes:
+		var t := TextureRect.new()
+		t.texture = tribe.icon
+		%TribesContainer.add_child(t)
 
 	for n in %SigilsContainer.get_children():
 		%SigilsContainer.remove_child(n)
@@ -246,13 +288,14 @@ func redraw_card() -> void:
 			var btn := active_button.instantiate()
 			%SigilsContainer.add_child(btn)
 			sigil.reparent(btn)
+			btn.disabled = sigil.fight_manager != null and sigil.is_disable()
 			btn.connect("pressed", func() -> void: active_pressed.emit(sigil_idx))
 
 	%Attack.text = str(attack)
 	if attack > card_data.attack:
 		%Attack.add_theme_color_override(&"font_color", Color("007c00"))
 	elif attack < card_data.attack:
-		%Attack.add_theme_color_override(&"font_color", Color("680000"))
+		%Attack.add_theme_color_override(&"font_color", Color("82051e"))
 	else:
 		%Attack.add_theme_color_override(&"font_color", Color("000000"))
 
@@ -260,20 +303,29 @@ func redraw_card() -> void:
 	for n in %CostContainer.get_children():
 		%CostContainer.remove_child(n)
 		n.queue_free()
+
+	for n in cost_string(costs):
+		%CostContainer.add_child(n)
+
+
+@warning_ignore("shadowed_variable")
+static func cost_string(costs: Costs) -> Array[HBoxContainer]:
+	var out: Array[HBoxContainer] = []
 	if costs.bone != 0:
-		%CostContainer.add_child(num_cost_icon("res://asset/cost/bone.png", costs.bone as int))
+		out.append(num_cost_icon("res://asset/cost/bone.png", costs.bone as int))
 	if costs.blood != 0:
-		%CostContainer.add_child(num_cost_icon("res://asset/cost/blood.png", costs.blood as int))
+		out.append(num_cost_icon("res://asset/cost/blood.png", costs.blood as int))
 	if costs.energy != 0:
-		%CostContainer.add_child(num_cost_icon("res://asset/cost/energy.png", costs.energy as int))
+		out.append(num_cost_icon("res://asset/cost/energy.png", costs.energy as int))
 	if costs.cell != 0:
-		%CostContainer.add_child(num_cost_icon("res://asset/cost/cell.png", costs.cell as int))
+		out.append(num_cost_icon("res://asset/cost/cell.png", costs.cell as int))
 
 	if not costs.mox.is_empty():
-		%CostContainer.add_child(mox_cost_icon())
+		out.append(mox_cost_icon(costs.mox))
+	return out
 
 
-func num_cost_icon(cost_icon: String, amount: int) -> HBoxContainer:
+static func num_cost_icon(cost_icon: String, amount: int) -> HBoxContainer:
 	var cost := HBoxContainer.new()
 	cost.add_theme_constant_override("separation", -1)
 	@warning_ignore("shadowed_variable_base_class")
@@ -289,18 +341,18 @@ func num_cost_icon(cost_icon: String, amount: int) -> HBoxContainer:
 	return cost
 
 
-func mox_cost_icon() -> HBoxContainer:
+static func mox_cost_icon(mox: Costs.Mox) -> HBoxContainer:
 	var cost := HBoxContainer.new()
 	cost.add_theme_constant_override("separation", -5)
-	for i in range(costs.mox.green):
+	for i in range(mox.green):
 		var t := TextureRect.new()
 		t.texture = load("res://asset/cost/mox/green.png")
 		cost.add_child(t)
-	for i in range(costs.mox.orange):
+	for i in range(mox.orange):
 		var t := TextureRect.new()
 		t.texture = load("res://asset/cost/mox/orange.png")
 		cost.add_child(t)
-	for i in range(costs.mox.blue):
+	for i in range(mox.blue):
 		var t := TextureRect.new()
 		t.texture = load("res://asset/cost/mox/blue.png")
 		cost.add_child(t)

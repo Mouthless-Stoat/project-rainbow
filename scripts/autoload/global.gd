@@ -29,14 +29,20 @@ var ruleset: Ruleset:
 
 var enable_backrow := false
 
+var rulesets_path := "user://rulesets"
+var decks_path := "user://decks"
+
 
 func _ready() -> void:
-	var user_dir := DirAccess.open("user://")
-	if not user_dir.dir_exists("rulesets"):
-		push_warning("Rulesets dir not found creating it...")
-		user_dir.make_dir("rulesets")
-	var t := {}
-	validate_schema(t, Ruleset.RULESET_SCHEMA)
+	_make_if_not_found(rulesets_path)
+	_make_if_not_found(decks_path)
+
+
+func _make_if_not_found(path: String) -> void:
+	if not DirAccess.dir_exists_absolute(path):
+		push_warning("%s not found creating it..." % path)
+		DirAccess.make_dir_absolute(path)
+	pass
 
 
 func quadratic_bezier(start: Vector2, end: Vector2, mid: Vector2) -> Callable:
@@ -45,6 +51,20 @@ func quadratic_bezier(start: Vector2, end: Vector2, mid: Vector2) -> Callable:
 		var q1 := mid.lerp(end, t)
 
 		return [q0.lerp(q1, t), (q1 - q0).angle()]
+
+
+func sum(array: Array) -> int:
+	return array.reduce(func(acc: int, val: int) -> int: return acc + val, 0)
+
+
+func compare_card(a: Ruleset.CardData, b: Ruleset.CardData) -> bool:
+	if a.costs.is_less(b.costs):
+		return true
+
+	if b.costs.is_less(a.costs):
+		return false
+
+	return a.name < b.name
 
 
 func show_error(txt: String) -> void:
@@ -153,3 +173,11 @@ func validate_schema(
 						'A value inside of data\'s "%s" is of the wrong type, removing it'
 					)
 					array.erase(array[i])
+
+
+## Remove all children of a parent node.
+func clear_children(parent: Node, free_child := true) -> void:
+	for child in parent.get_children():
+		parent.remove_child(child)
+		if free_child:
+			child.queue_free()

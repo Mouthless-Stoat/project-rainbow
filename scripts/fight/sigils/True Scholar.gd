@@ -6,11 +6,11 @@ func is_active_sigil() -> bool:
 
 
 func is_disable() -> bool:
-	return false if fight_manager.get_moxes().blue >= 1 else true
+	return fight_manager.get_moxes().blue <= 0
 
 
 func on_sigil_activate(
-	card: Card, sigil: Sigil, source_id: String, source_type: Action.IDType
+	card: Card, sigil: Sigil, _source_id: String, _source_type: Action.IDType
 ) -> void:
 	if card != attached_card or sigil != self:
 		return

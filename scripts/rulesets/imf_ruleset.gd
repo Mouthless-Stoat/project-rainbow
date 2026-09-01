@@ -83,7 +83,7 @@ func _init(ruleset: Dictionary) -> void:
 					blood = (old_data.blood_cost as int) if "blood_cost" in old_data else 0,
 					bone = (old_data.bone_cost as int) if "bone_cost" in old_data else 0,
 					energy = (old_data.energy_cost as int) if "energy_cost" in old_data else 0,
-					cells = 2 if "sigils" in old_data and "Depleting" in old_data.sigils else 0,
+					cell = 2 if "sigils" in old_data and "Depleting" in old_data.sigils else 0,
 					mox =
 					(
 						old_data.mox_cost.map(func(m: String) -> String: return m.to_lower())
@@ -92,6 +92,49 @@ func _init(ruleset: Dictionary) -> void:
 					)
 				},
 				tokens = tokens,
-				metadata = metadata
+				metadata = metadata,
+				banned = "banned" in old_data
 			}
 		))
+	side_decks.clear()
+
+	if ruleset.side_decks.is_empty():
+		ruleset.side_decks["none"] = {
+			"card": cards.keys()[0],
+			"count": 0.0,
+			"type": "single"
+		}
+	
+	for side_deck_name: String in (ruleset.side_decks as Dictionary).keys():
+		var data := ruleset.side_decks[side_deck_name] as Dictionary
+		if data.type == "single":
+			side_decks[side_deck_name] = SideDeck.new(
+				side_deck_name,
+				{
+					name = side_deck_name,
+					type = "constructed",
+					cards = [{card = data.card, amount = data.count}]
+				}
+			)
+		elif data.type == "single_cat":
+			var single_dict: Dictionary[String, Dictionary] = {}
+			for deck_name: String in (data.cards as Dictionary).keys():
+				var single_data := data.cards[deck_name] as Dictionary
+				single_dict[deck_name] = {
+					name = deck_name,
+					type = "constructed",
+					cards = [{card = single_data.card, amount = single_data.count}]
+				}
+			side_decks[side_deck_name] = SideDeckCategory.new(
+				side_deck_name, {name = side_deck_name, decks = single_dict}
+			)
+		elif data.type == "draft":
+			side_decks[side_deck_name] = SideDeck.new(
+				side_deck_name,
+				{
+					name = side_deck_name,
+					type = "draft",
+					draftable_cards = data.cards,
+					max_size = data.count
+				}
+			)

@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://d4kntw6wxj30n"]
 
 [ext_resource type="Script" uid="uid://blhcx78lnp2kf" path="res://prefab/card/card.gd" id="1_8nimt"]
+[ext_resource type="Texture2D" uid="uid://bu1rnyjfq51he" path="res://asset/rarities/decoration/card/rare.png" id="2_ow07e"]
 [ext_resource type="Script" uid="uid://d0y06b2xbgam2" path="res://scripts/utils/name_scroller.gd" id="2_pe5rd"]
 [ext_resource type="Texture2D" uid="uid://bie1qwdx23na7" path="res://asset/portraits/Squirrel.png" id="3_f2uqh"]
 [ext_resource type="Texture2D" uid="uid://dwqomvvflnhbv" path="res://asset/frame/common.png" id="4_ww8vi"]
 [ext_resource type="Texture2D" uid="uid://d0pgud2366y2d" path="res://asset/temples/technology.png" id="5_dtxg0"]
 [ext_resource type="Texture2D" uid="uid://bw1deabnl56ig" path="res://asset/sacrifice_marker.png" id="6_cryra"]
-[ext_resource type="PackedScene" uid="uid://cseru25qu6wrb" path="res://prefab/card/active_button.tscn" id="6_dtxg0"]
 [ext_resource type="Texture2D" uid="uid://b531uel5u5ohf" path="res://asset/submerge_overlay.png" id="7_ww8vi"]
-[ext_resource type="Texture2D" uid="uid://dmfx6pvl4tvqs" path="res://asset/sigils/Enlarge.png" id="10_lvdbq"]
+[ext_resource type="Texture2D" uid="uid://dovhuh7aispmc" path="res://asset/banned_overlay.png" id="9_vg7gv"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_vp3qw"]
 grow_begin = -2.0
@@ -23,13 +23,33 @@ script = ExtResource("1_8nimt")
 
 [node name="CostContainer" type="FlowContainer" parent="." unique_id=670708525]
 unique_name_in_owner = true
-z_index = 10
+z_index = 1
 layout_mode = 0
 offset_top = 13.0
 offset_right = 73.0
 offset_bottom = 59.5
 mouse_filter = 2
 alignment = 2
+
+[node name="TribesContainer" type="FlowContainer" parent="." unique_id=1747426863]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.24705882)
+layout_mode = 0
+offset_left = 1.0
+offset_top = 15.0
+offset_right = 73.0
+offset_bottom = 59.0
+mouse_filter = 2
+theme_override_constants/h_separation = 11
+last_wrap_alignment = 2
+
+[node name="RarityDecoration" type="TextureRect" parent="." unique_id=1836075024]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(73, 93)
+layout_mode = 0
+offset_right = 73.0
+offset_bottom = 93.0
+texture = ExtResource("2_ow07e")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2110881630]
 layout_mode = 1
@@ -117,17 +137,6 @@ theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 alignment = 1
 
-[node name="ActiveButton" parent="VBoxContainer/CenterContainer/SigilsContainer" unique_id=1105368346 instance=ExtResource("6_dtxg0")]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/CenterContainer/SigilsContainer/ActiveButton" unique_id=1873195687]
-layout_mode = 0
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 24.0
-offset_bottom = 12.0
-texture = ExtResource("10_lvdbq")
-
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer" unique_id=471424775]
 layout_mode = 2
 theme_override_constants/margin_left = 2
@@ -154,7 +163,6 @@ text = "100"
 horizontal_alignment = 2
 
 [node name="SacMarker" type="TextureRect" parent="." unique_id=848644792]
-unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -165,7 +173,6 @@ grow_vertical = 2
 texture = ExtResource("6_cryra")
 
 [node name="SubmergeOverlay" type="TextureRect" parent="." unique_id=147527280]
-unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -174,3 +181,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("7_ww8vi")
+
+[node name="BanOverlay" type="TextureRect" parent="." unique_id=309410691]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("9_vg7gv")

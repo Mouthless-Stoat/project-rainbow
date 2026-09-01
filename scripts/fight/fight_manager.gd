@@ -78,12 +78,6 @@ func _process(_delta: float) -> void:
 	$VBoxContainer/HBoxContainer2/LeftUI/OppEnergy.text = ("Opp Energy: " + str(opp_data.energy))
 	_update_cursor()
 
-	for slot in board_manager.slots:
-		if slot == null:
-			continue
-		if slot.card != null:
-			slot.card.slot_attack_buf = slot.attack_buf
-
 
 func _update_cursor() -> void:
 	var texture: String = "res://asset/cursor/default.png"
@@ -114,10 +108,19 @@ class Player:
 # --- FIGHT UTILS ---
 
 
-func _start_fight() -> void:
+func _start_fight(deck_dict: Dictionary) -> void:
 	visible = true
 	my_data = Player.new()
 	opp_data = Player.new()
+	var main_deck: Array[Ruleset.CardData] = []
+	for card_name: String in deck_dict.main.keys():
+		var card_data := Global.get_card_by_name(card_name)
+		if card_data == null:
+			push_warning("Can't find card %s while loading deck, skipping..." % card_name)
+			continue
+		for i in deck_dict.main[card_name] as int:
+			main_deck.append(card_data)
+	deck = Deck.new(main_deck, Global.ruleset.resolve_side_deck(deck_dict.side as Dictionary))
 	await _draw_starting_hand()
 
 
@@ -330,7 +333,10 @@ func _on_active_pressed(card: Card, sigil_idx: int) -> void:
 	var sigil: Sigil = card._sigils.get(sigil_idx)
 	if sigil == null:
 		return
-	if state != State.IDLE or (not sigil.is_universal() and sigil.controller_id() != Global.uuid):
+	if state != State.IDLE:
+		return
+	push_warning("hee")
+	if not sigil.is_universal() and sigil.controller_id() != Global.uuid:
 		return
 	var a := ActivateSigilAction.new(card.id, sigil_idx, Global.uuid, Action.IDType.PLAYER)
 	_push_action(a)
@@ -503,6 +509,11 @@ func handle_static() -> void:
 		sigil.static_ability(true)
 	for sigil in sigils:
 		sigil.static_ability(false)
+	for slot in board_manager.slots:
+		if slot == null:
+			continue
+		if slot.card != null:
+			slot.card.slot_attack_buf = slot.attack_buf
 
 
 func _no_activation() -> void:
@@ -524,7 +535,6 @@ func _activate_sigil_on_cards(cards: Array[Card], callback: Callable) -> Array[A
 		for sigil: Sigil in card._sigils:
 			if not sigil.activate_in_hand() and card.zone == Card.Zone.HAND:
 				if sigil.is_active_sigil():
-					push_warning("here")
 					sigil.get_parent().disabled = true
 				continue
 			if sigil.is_active_sigil():
