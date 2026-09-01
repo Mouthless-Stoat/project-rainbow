@@ -163,6 +163,12 @@ autowrap_mode = 2
 [node name="Separator3" parent="VBoxContainer" unique_id=54380871 instance=ExtResource("2_77xgr")]
 layout_mode = 2
 
+[node name="CloseBtn" type="Button" parent="VBoxContainer" unique_id=795302581]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+theme_override_font_sizes/font_size = 32
+text = "- EXIT -"
+
 [node name="PopupBlocker" type="PanelContainer" parent="." unique_id=382496074]
 visible = false
 z_index = 100
@@ -240,6 +246,7 @@ favorites_enabled = false
 deleting_enabled = false
 
 [connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AddDeckBtn" to="." method="_on_add_deck_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/CloseBtn" to="." method="_on_close_btn_pressed"]
 [connection signal="pressed" from="PopupBlocker/CenterContainer/Popup/VBoxContainer/HBoxContainer/BkBtn" to="." method="_on_bk_btn_pressed"]
 [connection signal="pressed" from="PopupBlocker/CenterContainer/Popup/VBoxContainer/HBoxContainer/LoadBtn" to="." method="_on_load_btn_pressed"]
 [connection signal="pressed" from="PopupBlocker/CenterContainer/Popup/VBoxContainer/CancelBtn" to="." method="_on_cancel_btn_pressed"]

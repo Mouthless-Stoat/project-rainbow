@@ -94,9 +94,16 @@ text_overrun_behavior = 6
 [node name="Separator3" parent="VBoxContainer" unique_id=35885605 instance=ExtResource("2_onyn0")]
 layout_mode = 2
 
+[node name="CloseBtn" type="Button" parent="VBoxContainer" unique_id=853486494]
+layout_mode = 2
+theme_type_variation = &"TitleButton"
+theme_override_font_sizes/font_size = 32
+text = "- EXIT -"
+
 [node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=1539314974]
 
 [connection signal="horvered" from="VBoxContainer/CenterContainer/VBoxContainer/AddBtn/AddLinkBtn" to="." method="_on_button_horvered"]
 [connection signal="mouse_exited" from="VBoxContainer/CenterContainer/VBoxContainer/AddBtn/AddLinkBtn" to="." method="_on_button_unhorvered"]
 [connection signal="horvered" from="VBoxContainer/CenterContainer/VBoxContainer/AddBtn/AddFileBtn" to="." method="_on_button_horvered"]
 [connection signal="mouse_exited" from="VBoxContainer/CenterContainer/VBoxContainer/AddBtn/AddFileBtn" to="." method="_on_button_unhorvered"]
+[connection signal="pressed" from="VBoxContainer/CloseBtn" to="." method="_on_close_btn_pressed"]
