@@ -264,6 +264,12 @@ func create_and_add_token(card_data: Ruleset.CardData, player_id := "", source_i
 
 func change_bone(amount: int, player_id: String, death_source_id := "") -> void:
 	add_action(ChangeBonesAction.new(amount, player_id, death_source_id))
+	
+func change_cells(amount: int, player_id: String, is_empty: bool) -> void:
+	add_action(ChangeCellsAction.new(amount, player_id, is_empty))
+	
+func change_energy(amount: int, player_id: String) -> void:
+	add_action(ChangeEnergyAction.new(amount, player_id))
 
 
 func sacrifice_card(card_id: String) -> void:
