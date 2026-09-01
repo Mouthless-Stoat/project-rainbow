@@ -120,11 +120,12 @@ text = "- DECK LIBRARY -"
 script = ExtResource("3_3dxm6")
 ui = NodePath("../../../DeckLibrary")
 
-[node name="RulesetBtn" type="Button" parent="TitleScreen/VBoxContainer" unique_id=1361696344]
+[node name="RulesetBtn" type="Button" parent="TitleScreen/VBoxContainer" unique_id=1361696344 node_paths=PackedStringArray("ui")]
 layout_mode = 2
 theme_type_variation = &"TitleButton"
 text = "- RULESET SELECTOR -"
 script = ExtResource("3_3dxm6")
+ui = NodePath("../../../RulesetSelector")
 
 [node name="CreditBtn" type="Button" parent="TitleScreen/VBoxContainer" unique_id=184630252]
 layout_mode = 2
