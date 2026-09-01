@@ -8,8 +8,11 @@ func egg_data() -> Ruleset.CardData:
 		return Global.get_card_by_name(broken_egg) 
 		
 	else: 
-		if randf() > 0.1: return Global.get_card_by_name(broken_egg as String) 
-		else:return Global.get_card_by_name(raven_egg as String) 
+		if randf() < get_config("broken_egg_rng", 0.9) as float: 
+			return Global.get_card_by_name(broken_egg as String) 
+			
+		else:
+			return Global.get_card_by_name(raven_egg as String) 
 	
 	
 func on_card_played(
