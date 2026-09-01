@@ -48,16 +48,19 @@ var sac_candidate: Array[Card] = []
 
 var opp_id: String
 
-var main_deck: Array[Ruleset.CardData] = [
-	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Leader"]}),
-	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Leader"]}),
-	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Sniper"]}),
-	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Bone King"]}),
-	Ruleset.CardData.new({name = "Squirrel", attack = 1, health = 1, sigils = ["Bone King"]}),
-]
-var side_deck: Array[Ruleset.CardData] = [
-	Ruleset.CardData.new({name = "Greater Smoke", attack = 1, health = 1, sigils = ["Bone King"]}),
-]
+
+class Deck:
+	var main: Array[Ruleset.CardData] = []
+	var side: Array[Ruleset.CardData] = []
+
+	func _init(m: Array[Ruleset.CardData], s: Array[Ruleset.CardData]) -> void:
+		main = m
+		side = s
+		main.shuffle()
+		side.shuffle()
+
+
+var deck: Deck
 
 
 func _process(_delta: float) -> void:
