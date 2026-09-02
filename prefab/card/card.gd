@@ -47,7 +47,7 @@ class Costs:
 			var m := Mox.new()
 			m.blue = amount
 			return m
-			
+
 		static func gob(green_amount := 1, orange_amount := 1, blue_amount := 1) -> Mox:
 			var m := Mox.new()
 			m.green = green_amount
@@ -146,6 +146,13 @@ var attack: int:
 	set(new):
 		attack = new
 		redraw_card()
+## The special attack name on the card. If you want to get the actual [SpecialAttack] object, use
+## [member special_attack_]
+var special_attack: String:
+	set(new):
+		special_attack = new
+		redraw_card()
+var special_attack_: SpecialAttack
 ## The health of the card
 var health: int:
 	set(new):
@@ -211,7 +218,6 @@ func parse_data(data: Ruleset.CardData, show_warning := false) -> void:
 	sigils.clear()
 	_sigils.clear()
 
-	# TODO: Fix this, use an enum or soemthing
 	attack = data.attack
 	health = data.health
 
@@ -236,6 +242,31 @@ func parse_data(data: Ruleset.CardData, show_warning := false) -> void:
 		s.texture = load(sigil_path)
 		sigils.append(sigil)
 		_sigils.append(s)
+
+	special_attack = data.special_attack
+	if not special_attack.is_empty():
+		var script_path := "res://scripts/fight/special_attacks/%s.gd" % special_attack
+		if not FileAccess.file_exists(script_path):
+			push_warning.call(
+				(
+					'Special Attack script can\'t be found for "%s" so using missing script instead'
+					% special_attack
+				)
+			)
+			script_path = "res://scripts/fight/special_attacks/MISSING.gd"
+		var sp_atk: SpecialAttack = load(script_path).new()
+		sp_atk.attached_card = self
+
+		var icon_path := "res://asset/special_attacks/%s.png" % special_attack
+		if not FileAccess.file_exists(icon_path):
+			push_warning(
+				(
+					'Special Attack icon can\'t be found for "%s" so using missing texture instead'
+					% special_attack
+				)
+			)
+			icon_path = "res://asset/special_attacks/MISSING.png"
+		sp_atk.texture = load(icon_path)
 
 	rarity = Global.ruleset.rarities[data.rarity]
 	traits.assign(
