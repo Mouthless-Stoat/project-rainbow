@@ -10,7 +10,7 @@ func on_turn_end(player_id: String) -> void:
 	push_warning(neighbour)
 	var slot := neighbour[int(not flip_h)]
 	if slot == null or slot.card != null:
-		flip_h = true
+		flip_h = !flip_h
 	slot = neighbour[int(not flip_h)]
 	if slot == null or slot.card != null:
 		return
