@@ -143,7 +143,6 @@ script = ExtResource("4_tmx0f")
 
 [node name="Blocker" type="PanelContainer" parent="." unique_id=1328792040]
 unique_name_in_owner = true
-visible = false
 z_index = 100
 layout_mode = 1
 anchors_preset = 15
@@ -156,19 +155,47 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_oupg2")
 [node name="CenterContainer" type="CenterContainer" parent="Blocker" unique_id=755260296]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Blocker/CenterContainer" unique_id=389057757]
+[node name="WaitingOpp" type="Label" parent="Blocker/CenterContainer" unique_id=389057757]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Waiting for opponent"
 
-[node name="ResultPopup" type="PanelContainer" parent="Blocker/CenterContainer" unique_id=1261524886]
+[node name="_" type="Label" parent="Blocker/CenterContainer" unique_id=837218281]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="BackMenu" type="Button" parent="Blocker/CenterContainer/_" unique_id=2053949285]
+layout_mode = 0
+offset_left = -72.0
+offset_top = 165.0
+offset_right = 72.0
+offset_bottom = 217.99998
+size_flags_horizontal = 3
+text = "Back
+to
+menu"
+
+[node name="WinPopup" type="PanelContainer" parent="Blocker/CenterContainer" unique_id=1901806841]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme_type_variation = &"BasicPopup"
 
-[node name="Label" type="Label" parent="Blocker/CenterContainer/ResultPopup" unique_id=1449153627]
+[node name="Label" type="Label" parent="Blocker/CenterContainer/WinPopup" unique_id=813740299]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "You Win"
+horizontal_alignment = 1
+
+[node name="LosePopup" type="PanelContainer" parent="Blocker/CenterContainer" unique_id=1261524886]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+theme_type_variation = &"BasicPopup"
+
+[node name="Label" type="Label" parent="Blocker/CenterContainer/LosePopup" unique_id=1449153627]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "You Lose"
@@ -179,3 +206,4 @@ horizontal_alignment = 1
 [connection signal="card_selected" from="VBoxContainer/HBoxContainer/HandManager" to="." method="_on_card_selected"]
 [connection signal="card_unselected" from="VBoxContainer/HBoxContainer/HandManager" to="." method="_on_card_unselected"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/End" to="." method="_on_end_pressed"]
+[connection signal="pressed" from="Blocker/CenterContainer/_/BackMenu" to="." method="_on_back_menu_pressed"]

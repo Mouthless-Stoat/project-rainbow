@@ -127,10 +127,11 @@ func _start_fight(deck_dict: Dictionary) -> void:
 	await _draw_starting_hand()
 
 
-func lose_game() -> void:
+func end_game(win: bool) -> void:
 	%Blocker.visible = true
-	%ResultPopup.visible = true
-	$Blocker/CenterContainer/Label.visible = false
+	if win: %WinPopup.visible = true
+	else: %LosePopup.visible = true
+	$Blocker/CenterContainer/WaitingOpp.visible = false
 
 
 func _draw_starting_hand() -> void:
@@ -347,6 +348,15 @@ func _on_active_pressed(card: Card, sigil_idx: int) -> void:
 		ConnectionManager.GameMessage.ACTIONS, {actions = [a.as_dict()], private = false}
 	)
 	await _resolve_stack()
+
+
+func _on_back_menu_pressed() -> void:
+#	WARNING : DOES NOT PROPERLY CLOSE THE CONNECTION YET.
+	
+	ConnectionManager.leave_room()
+	if ConnectionManager.is_host:
+		ConnectionManager.close_room()
+	visible = false
 
 
 # --- STACK SHIT ---

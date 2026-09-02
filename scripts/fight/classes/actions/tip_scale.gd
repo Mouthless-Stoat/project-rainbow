@@ -17,8 +17,6 @@ func resolve(fight_manager: FightManager) -> void:
 	if amount == 0:
 		return
 	fight_manager.scale_position += amount
-	if fight_manager.scale_position <= -5:
-		fight_manager.lose_game()
 	await fight_manager._activate_sigils(func(sigil: Sigil) -> void: sigil.on_scale_tipped(amount))
 
 
