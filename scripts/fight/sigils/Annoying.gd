@@ -1,7 +1,7 @@
 extends Sigil
 
 func damage_buff() -> int:
-	return get_config("Annoying_buff", 1) as int
+	return get_config("annoying_buff", 1) as int
 
 
 func static_ability(is_reset: bool) -> void:
