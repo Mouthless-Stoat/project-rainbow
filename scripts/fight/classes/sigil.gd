@@ -167,6 +167,10 @@ func on_energy_refresh(player_id: String) -> void:
 func on_card_sacrificed(card: Card) -> void:
 	return
 
+## Called after [UseHammerAction] resolved.  This means the card is still alive and on the board.
+func on_card_hammered(card: Card) -> void:
+	return
+
 
 ## Called whenever an action is added to the stack. If this return a non empty array the top action
 ## of the stack is replace with the returned value.

@@ -79,6 +79,7 @@ func _process(_delta: float) -> void:
 	$VBoxContainer/HBoxContainer2/LeftUI/OppBone.text = "Opp Bones: " + str(opp_data.bones)
 	$VBoxContainer/HBoxContainer2/LeftUI/OppCell.text = "Opp Energy Cells: " + str(opp_data.cells)
 	$VBoxContainer/HBoxContainer2/LeftUI/OppEnergy.text = ("Opp Energy: " + str(opp_data.energy))
+	%HammerBtn.text = ("Hammer (%s/%s)" % [my_data.hammer_uses, Global.ruleset.settings.hammer_uses_per_turn])
 	_update_cursor()
 
 
@@ -106,6 +107,7 @@ class Player:
 	var hand_size: int = 0
 	## The cards in the player hand that is public information
 	var public_card: Array[Card] = []
+	var hammer_uses: int = Global.ruleset.settings.hammer_uses_per_turn
 
 
 # --- FIGHT UTILS ---
@@ -321,6 +323,24 @@ func _on_slot_selected(slot: BoardManager.Slot) -> void:
 
 	if state == State.TARGET:
 		target_acquired.emit(slot)
+	
+	if state == State.HAMMER and slot.pos.y == BoardManager.Row.MINE:
+		if slot.card == null:
+			return
+		var card := slot.card
+		var actions: Array[Action] = []
+		actions.push_back(UseHammerAction.new(card.id, Global.uuid))
+		my_data.hammer_uses -= 1
+		_push_actions(actions)
+		ConnectionManager.send(
+			ConnectionManager.GameMessage.ACTIONS,
+			{
+				actions = actions.map(func(a: Action) -> Dictionary: return a.as_dict()),
+				private = false
+			}
+		)
+		await _resolve_stack()
+		state = State.IDLE
 
 
 func _on_card_selected(card: Card) -> void:
@@ -372,6 +392,16 @@ func _on_end_pressed() -> void:
 	ConnectionManager.send(
 		ConnectionManager.GameMessage.ACTIONS, {actions = [a.as_dict()], private = false}
 	)
+
+
+func _on_hammer_btn_pressed() -> void:
+	match state:
+		State.IDLE when my_data.hammer_uses > 0:
+			state = State.HAMMER
+		State.HAMMER:
+			state = State.IDLE
+		_:
+			pass
 
 
 func _on_active_pressed(card: Card, sigil_idx: int) -> void:

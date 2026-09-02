@@ -16,7 +16,8 @@ func _init(ruleset: Dictionary) -> void:
 				{
 					amount = ruleset.num_candles,
 					smoke = "Greater Smoke" if ruleset.allow_snuffing_candles else "",
-				}
+				},
+				hammer_uses_per_turn = ruleset.hammers_per_turn,
 			}
 		)
 	)

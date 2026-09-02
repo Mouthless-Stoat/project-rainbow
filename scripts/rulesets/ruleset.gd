@@ -23,11 +23,13 @@ class RulesetSettings:
 	var enable_backrow: bool
 	## Candles settings, refer to [CandlesSettings].
 	var candles_settings: CandlesSettings
+	var hammer_uses_per_turn: int
 
 	func _init(settings_config: Dictionary) -> void:
 		deck_size_min = settings_config.deck_size_min
 		enable_backrow = settings_config.enable_backrow
 		candles_settings = CandlesSettings.new(settings_config.candles as Dictionary)
+		hammer_uses_per_turn = settings_config.hammer_uses_per_turn
 
 
 ## Rarity config/data.
@@ -379,6 +381,7 @@ static var RULESET_SCHEMA: Dictionary[String, Dictionary] = {
 		{
 			deck_size_min = {types = [TYPE_INT], default = 30},
 			enable_backrow = {types = [TYPE_BOOL], default = false},
+			hammer_uses_per_turn = {types = [TYPE_INT], default = 1},
 			candles =
 			{
 				types = [TYPE_DICTIONARY],
