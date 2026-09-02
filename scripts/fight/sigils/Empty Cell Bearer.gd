@@ -6,4 +6,4 @@ func on_card_played(
 ) -> void:
 	if played_card != attached_card:
 		return
-	change_cells(1, controller_id(), true)
+	change_cells(1, controller_id(), false)
