@@ -8,7 +8,7 @@ func trymove(card_pos: Vector2i, offset: int, row: Array[BoardManager.Slot]) -> 
 		if row[readpos].card == null: #if we find an empty space, break the chain.
 			break
 
-	return (readpos < 0 || readpos >= row.size()) #if we got outside of the array, the shove-chain has hit a wall and nothing will happen
+	return (readpos < 0 || readpos >= row.size()) #if we got outside of the array, the shove-chain has hit a wall
 
 
 
