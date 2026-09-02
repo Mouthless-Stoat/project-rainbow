@@ -182,6 +182,42 @@ func active_id() -> String:
 	return (Global.uuid as String) if is_active else opp_id
 
 
+func request_target(
+	player_id: String,
+	can_cancel: bool = false,
+	filter := func(_slot: BoardManager.Slot) -> bool: return true,
+) -> BoardManager.Slot:
+	var slot: BoardManager.Slot = null
+	if player_id == Global.uuid:
+		state = State.TARGET
+		while true:
+			slot = await target_acquired
+			if (slot == null and can_cancel) or filter.call(slot):
+				break
+		state = State.IDLE
+		var p := Vector2i(-1, -1)
+		if slot != null:
+			p = BoardManager.oppose_pos(slot.pos)
+		ConnectionManager.send(
+			ConnectionManager.GameMessage.TARGET_ACQUIRED, {
+				canceled = slot == null,
+				pos = {x = p.x, y = p.y}
+				}
+		)
+	else:
+		var packet: Dictionary = {}
+		while true:
+			packet = await ConnectionManager.recieved_packet
+			if packet.type != ConnectionManager.GameMessage.TARGET_ACQUIRED:
+				continue
+			if not packet.canceled:
+				slot = board_manager.get_slot(
+					Vector2i(packet.pos.x as int, packet.pos.y as int)
+				)
+			break
+	return slot
+
+
 # --- GODOT EVENT ---
 
 
@@ -190,6 +226,12 @@ func _ready() -> void:
 	visible = true
 	await get_tree().process_frame
 	visible = false
+
+
+func _input(event: InputEvent) -> void:
+	if event.is_action(&"cancel_selection") and state == State.TARGET:
+		target_acquired.emit(null)
+		accept_event()
 
 
 func _on_recieved_packet(packet: Dictionary) -> void:
