@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dk8xql1dsosn8" path="res://packed/deck_library/deck_library.gd" id="1_i8dw4"]
 [ext_resource type="PackedScene" uid="uid://dwhmym7riy2eo" path="res://prefab/separator.tscn" id="2_77xgr"]
 [ext_resource type="Texture2D" uid="uid://beioiqusnxhs3" path="res://asset/ruleset_icon/plus.png" id="3_0f3h0"]
+[ext_resource type="Texture2D" uid="uid://dr7ktduxna3yn" path="res://asset/ruleset_icon/cross.png" id="3_wnwq6"]
 [ext_resource type="Texture2D" uid="uid://dooq4so256ueh" path="res://asset/ruleset_icon/clipboard.png" id="4_k8i4a"]
 [ext_resource type="Texture2D" uid="uid://du2ktv20mkxyp" path="res://asset/ruleset_icon/file.png" id="5_4qqor"]
 [ext_resource type="Script" uid="uid://ccuyd8bprftvj" path="res://scripts/utils/ui_control_btn.gd" id="6_u1fnd"]
@@ -29,11 +30,35 @@ theme_override_constants/separation = 0
 [node name="Separator" parent="VBoxContainer" unique_id=444231581 instance=ExtResource("2_77xgr")]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer" unique_id=1948926342]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=2109790204]
+layout_mode = 2
+
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="VBoxContainer/HBoxContainer" unique_id=1820629996]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="CloseBtn" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=795302581 node_paths=PackedStringArray("ui")]
+layout_mode = 2
+offset_transform_position = Vector2(-51.87, 0)
+theme_type_variation = &"TitleButton"
+theme_override_font_sizes/font_size = 32
+icon = ExtResource("3_wnwq6")
+script = ExtResource("6_u1fnd")
+ui = NodePath("../../..")
+make_visible = false
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="VBoxContainer/HBoxContainer" unique_id=1868862281]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1948926342]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Deck Library"
 horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer" unique_id=732501509]
+layout_mode = 2
 
 [node name="Separator2" parent="VBoxContainer" unique_id=340417688 instance=ExtResource("2_77xgr")]
 layout_mode = 2
@@ -163,12 +188,6 @@ autowrap_mode = 2
 [node name="Separator3" parent="VBoxContainer" unique_id=54380871 instance=ExtResource("2_77xgr")]
 layout_mode = 2
 
-[node name="CloseBtn" type="Button" parent="VBoxContainer" unique_id=795302581]
-layout_mode = 2
-theme_type_variation = &"TitleButton"
-theme_override_font_sizes/font_size = 32
-text = "- EXIT -"
-
 [node name="PopupBlocker" type="PanelContainer" parent="." unique_id=382496074]
 visible = false
 z_index = 100
@@ -246,7 +265,6 @@ favorites_enabled = false
 deleting_enabled = false
 
 [connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AddDeckBtn" to="." method="_on_add_deck_btn_pressed"]
-[connection signal="pressed" from="VBoxContainer/CloseBtn" to="." method="_on_close_btn_pressed"]
 [connection signal="pressed" from="PopupBlocker/CenterContainer/Popup/VBoxContainer/HBoxContainer/BkBtn" to="." method="_on_bk_btn_pressed"]
 [connection signal="pressed" from="PopupBlocker/CenterContainer/Popup/VBoxContainer/HBoxContainer/LoadBtn" to="." method="_on_load_btn_pressed"]
 [connection signal="pressed" from="PopupBlocker/CenterContainer/Popup/VBoxContainer/CancelBtn" to="." method="_on_cancel_btn_pressed"]

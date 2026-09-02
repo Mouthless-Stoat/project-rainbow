@@ -188,7 +188,3 @@ func _on_file_selected(path: String) -> void:
 	)
 	var deck_dict := JSON.stringify(dict)
 	deck_file.store_string(deck_dict)
-
-
-func _on_close_btn_pressed() -> void:
-	visible = false

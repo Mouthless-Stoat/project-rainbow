@@ -127,10 +127,11 @@ func _start_fight(deck_dict: Dictionary) -> void:
 	await _draw_starting_hand()
 
 
-func end_game(win: bool) -> void:
+func end_game(is_victory: bool) -> void:
 	%Blocker.visible = true
-	if win: %WinPopup.visible = true
-	else: %LosePopup.visible = true
+	%ResultPopup.visible = true
+	if is_victory: %ResultPopup/Win.visible = true
+	else: %ResultPopup/Lose.visible = true
 	$Blocker/CenterContainer/WaitingOpp.visible = false
 
 
@@ -351,11 +352,10 @@ func _on_active_pressed(card: Card, sigil_idx: int) -> void:
 
 
 func _on_back_menu_pressed() -> void:
-#	WARNING : DOES NOT PROPERLY CLOSE THE CONNECTION YET.
+#	WARNING : WORK TO BE DONE
+#	- Notification to opponent necessary.
+#	- Scene cleaning to be done.
 	
-	ConnectionManager.leave_room()
-	if ConnectionManager.is_host:
-		ConnectionManager.close_room()
 	visible = false
 
 

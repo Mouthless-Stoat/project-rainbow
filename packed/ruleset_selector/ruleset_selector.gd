@@ -117,6 +117,7 @@ func _on_button_selected(ruleset: RulesetIcon) -> void:
 		selected_ruleset = JSON.parse_string(file.get_as_text())
 		file.close()
 	Global.ruleset = RulesetParser.parse_ruleset(selected_ruleset)
+	%WithoutCloseBtn.visible = false
 	%CloseBtn.visible = true
 	visible = false
 
@@ -125,7 +126,3 @@ static func _is_installed(ruleset_name: Variant) -> bool:
 	if typeof(ruleset_name) != TYPE_STRING:
 		return false
 	return FileAccess.file_exists("user://rulesets/%s.json" % ruleset_name)
-
-
-func _on_close_btn_pressed() -> void:
-	visible = false
