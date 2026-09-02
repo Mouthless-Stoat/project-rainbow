@@ -95,6 +95,8 @@ text_overrun_behavior = 6
 layout_mode = 2
 
 [node name="CloseBtn" type="Button" parent="VBoxContainer" unique_id=853486494]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_type_variation = &"TitleButton"
 theme_override_font_sizes/font_size = 32
