@@ -9,3 +9,7 @@ var fight_manager: FightManager
 var attached_card: Card
 
 @abstract func attack_value() -> int
+
+
+func active_in_hand() -> bool:
+	return false

@@ -147,12 +147,12 @@ var attack: int:
 		attack = new
 		redraw_card()
 ## The special attack name on the card. If you want to get the actual [SpecialAttack] object, use
-## [member special_attack_]
+## [member _special_attack]
 var special_attack: String:
 	set(new):
 		special_attack = new
 		redraw_card()
-var special_attack_: SpecialAttack
+var _special_attack: SpecialAttack
 ## The health of the card
 var health: int:
 	set(new):
@@ -221,6 +221,31 @@ func parse_data(data: Ruleset.CardData, show_warning := false) -> void:
 	attack = data.attack
 	health = data.health
 
+	special_attack = data.special_attack
+	if not special_attack.is_empty():
+		var script_path := "res://scripts/fight/special_attacks/%s.gd" % special_attack
+		if not FileAccess.file_exists(script_path):
+			push_warning.call(
+				(
+					'Special Attack script can\'t be found for "%s" so using missing script instead'
+					% special_attack
+				)
+			)
+			script_path = "res://scripts/fight/special_attacks/MISSING.gd"
+		_special_attack = load(script_path).new()
+		_special_attack.attached_card = self
+
+		var icon_path := "res://asset/special_attacks/%s.png" % special_attack
+		if not FileAccess.file_exists(icon_path):
+			push_warning.call(
+				(
+					'Special Attack icon can\'t be found for "%s" so using missing texture instead'
+					% special_attack
+				)
+			)
+			icon_path = "res://asset/special_attacks/MISSING.png"
+		_special_attack.texture = load(icon_path)
+
 	for sigil: String in data.sigils:
 		# Figuring out where the script is
 		var script_path := "res://scripts/fight/sigils/%s.gd" % sigil
@@ -235,38 +260,13 @@ func parse_data(data: Ruleset.CardData, show_warning := false) -> void:
 		# Now the texture
 		var sigil_path := "res://asset/sigils/%s.png" % sigil
 		if not FileAccess.file_exists(sigil_path):
-			push_warning(
+			push_warning.call(
 				'Sigil icon can\'t be found for "%s" so using missing texture instead' % sigil
 			)
 			sigil_path = "res://asset/sigils/MISSING.png"
 		s.texture = load(sigil_path)
 		sigils.append(sigil)
 		_sigils.append(s)
-
-	special_attack = data.special_attack
-	if not special_attack.is_empty():
-		var script_path := "res://scripts/fight/special_attacks/%s.gd" % special_attack
-		if not FileAccess.file_exists(script_path):
-			push_warning.call(
-				(
-					'Special Attack script can\'t be found for "%s" so using missing script instead'
-					% special_attack
-				)
-			)
-			script_path = "res://scripts/fight/special_attacks/MISSING.gd"
-		var sp_atk: SpecialAttack = load(script_path).new()
-		sp_atk.attached_card = self
-
-		var icon_path := "res://asset/special_attacks/%s.png" % special_attack
-		if not FileAccess.file_exists(icon_path):
-			push_warning(
-				(
-					'Special Attack icon can\'t be found for "%s" so using missing texture instead'
-					% special_attack
-				)
-			)
-			icon_path = "res://asset/special_attacks/MISSING.png"
-		sp_atk.texture = load(icon_path)
 
 	rarity = Global.ruleset.rarities[data.rarity]
 	traits.assign(
@@ -329,13 +329,26 @@ func redraw_card() -> void:
 			btn.disabled = sigil.fight_manager != null and sigil.is_disable()
 			btn.connect("pressed", func() -> void: active_pressed.emit(sigil_idx))
 
-	%Attack.text = str(attack)
-	if attack > card_data.attack:
-		%Attack.add_theme_color_override(&"font_color", Color("007c00"))
-	elif attack < card_data.attack:
-		%Attack.add_theme_color_override(&"font_color", Color("82051e"))
-	else:
-		%Attack.add_theme_color_override(&"font_color", Color("000000"))
+	var sp_atk_rest_pos := Vector2(-1, 4)
+	Global.clear_children(%Attack, false)
+	%Attack.text = ""
+	if _special_attack != null:
+		%Attack.add_child(_special_attack)
+		_special_attack.position = sp_atk_rest_pos
+		_special_attack.self_modulate = Color.WHITE
+
+		if zone == Zone.BOARD or (zone == Zone.HAND and _special_attack.active_in_hand()):
+			_special_attack.position += Vector2.UP * 8
+			_special_attack.self_modulate.a = 0.5
+
+	if _special_attack == null or _special_attack.position != sp_atk_rest_pos:
+		%Attack.text = str(attack)
+		if attack > card_data.attack:
+			%Attack.add_theme_color_override(&"font_color", Color("007c00"))
+		elif attack < card_data.attack:
+			%Attack.add_theme_color_override(&"font_color", Color("82051e"))
+		else:
+			%Attack.add_theme_color_override(&"font_color", Color("000000"))
 
 	%Health.text = str(health)
 	for n in %CostContainer.get_children():
