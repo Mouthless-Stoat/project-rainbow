@@ -167,6 +167,11 @@ func on_energy_refresh(player_id: String) -> void:
 func on_card_sacrificed(card: Card) -> void:
 	return
 
+## Called after an action of any kind resolves.
+## I HEAVILY recommend optimizing code here, as it will be called alot.
+func on_any_action_resolved(act: Action) -> void:
+	return
+
 
 ## Called whenever an action is added to the stack. If this return a non empty array the top action
 ## of the stack is replace with the returned value.
