@@ -128,10 +128,11 @@ func _start_fight(deck_dict: Dictionary) -> void:
 
 
 func end_game(is_victory: bool) -> void:
+	%Surrender.visible = false
 	%Blocker.visible = true
 	%ResultPopup.visible = true
-	if is_victory: %ResultPopup/Win.visible = true
-	else: %ResultPopup/Lose.visible = true
+	if is_victory: %ResultPopup/Blocker1/Result.text = "You Win"
+	else: %ResultPopup/Blocker1/Result.text = "You Lose"
 	$Blocker/CenterContainer/WaitingOpp.visible = false
 
 
@@ -353,10 +354,16 @@ func _on_active_pressed(card: Card, sigil_idx: int) -> void:
 
 func _on_back_menu_pressed() -> void:
 #	WARNING : WORK TO BE DONE
-#	- Notification to opponent necessary.
 #	- Scene cleaning to be done.
 	
 	visible = false
+
+
+func _on_surrender_pressed() -> void:
+#	WARNING : WORK TO BE DONE
+#	- Notification to opponent necessary.
+	
+	_on_back_menu_pressed()
 
 
 # --- STACK SHIT ---
