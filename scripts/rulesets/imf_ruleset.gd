@@ -22,7 +22,7 @@ func _init(ruleset: Dictionary) -> void:
 	)
 
 	for card: Dictionary in ruleset.cards:
-		var old_data := card
+		var old_data: Dictionary = card
 
 		@warning_ignore("shadowed_variable_base_class")
 		var traits := []
@@ -60,8 +60,8 @@ func _init(ruleset: Dictionary) -> void:
 		cards[card.name] = (CardData.new(
 			{
 				name = old_data.name,
-				attack =
-				old_data.atkspecial if "atkspecial" in old_data else (old_data.attack as int),
+				attack = old_data.attack if "attack" in old_data else 0,
+				special_attack = old_data.get("atkspecial", "").to_lower(),
 				health = old_data.health,
 				sigils =
 				(
