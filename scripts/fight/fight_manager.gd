@@ -79,6 +79,7 @@ func _process(_delta: float) -> void:
 	$VBoxContainer/HBoxContainer2/LeftUI/OppBone.text = "Opp Bones: " + str(opp_data.bones)
 	$VBoxContainer/HBoxContainer2/LeftUI/OppCell.text = "Opp Energy Cells: " + str(opp_data.cells)
 	$VBoxContainer/HBoxContainer2/LeftUI/OppEnergy.text = ("Opp Energy: " + str(opp_data.energy))
+	%HammerBtn.text = ("Hammer (%s/%s)" % [my_data.hammer_uses, Global.ruleset.settings.hammer_uses_per_turn])
 	_update_cursor()
 
 
@@ -106,6 +107,7 @@ class Player:
 	var hand_size: int = 0
 	## The cards in the player hand that is public information
 	var public_card: Array[Card] = []
+	var hammer_uses: int = Global.ruleset.settings.hammer_uses_per_turn
 
 
 # --- FIGHT UTILS ---
@@ -182,6 +184,42 @@ func active_id() -> String:
 	return (Global.uuid as String) if is_active else opp_id
 
 
+func request_target(
+	player_id: String,
+	can_cancel: bool = false,
+	filter := func(_slot: BoardManager.Slot) -> bool: return true,
+) -> BoardManager.Slot:
+	var slot: BoardManager.Slot = null
+	if player_id == Global.uuid:
+		state = State.TARGET
+		while true:
+			slot = await target_acquired
+			if (slot == null and can_cancel) or filter.call(slot):
+				break
+		state = State.IDLE
+		var p := Vector2i(-1, -1)
+		if slot != null:
+			p = BoardManager.oppose_pos(slot.pos)
+		ConnectionManager.send(
+			ConnectionManager.GameMessage.TARGET_ACQUIRED, {
+				canceled = slot == null,
+				pos = {x = p.x, y = p.y}
+				}
+		)
+	else:
+		var packet: Dictionary = {}
+		while true:
+			packet = await ConnectionManager.recieved_packet
+			if packet.type != ConnectionManager.GameMessage.TARGET_ACQUIRED:
+				continue
+			if not packet.canceled:
+				slot = board_manager.get_slot(
+					Vector2i(packet.pos.x as int, packet.pos.y as int)
+				)
+			break
+	return slot
+
+
 # --- GODOT EVENT ---
 
 
@@ -190,6 +228,12 @@ func _ready() -> void:
 	visible = true
 	await get_tree().process_frame
 	visible = false
+
+
+func _input(event: InputEvent) -> void:
+	if event.is_action(&"cancel_selection") and state == State.TARGET:
+		target_acquired.emit(null)
+		accept_event()
 
 
 func _on_recieved_packet(packet: Dictionary) -> void:
@@ -279,6 +323,24 @@ func _on_slot_selected(slot: BoardManager.Slot) -> void:
 
 	if state == State.TARGET:
 		target_acquired.emit(slot)
+	
+	if state == State.HAMMER and slot.pos.y == BoardManager.Row.MINE:
+		if slot.card == null:
+			return
+		var card := slot.card
+		var actions: Array[Action] = []
+		actions.push_back(UseHammerAction.new(card.id, Global.uuid))
+		my_data.hammer_uses -= 1
+		_push_actions(actions)
+		ConnectionManager.send(
+			ConnectionManager.GameMessage.ACTIONS,
+			{
+				actions = actions.map(func(a: Action) -> Dictionary: return a.as_dict()),
+				private = false
+			}
+		)
+		await _resolve_stack()
+		state = State.IDLE
 
 
 func _on_card_selected(card: Card) -> void:
@@ -330,6 +392,16 @@ func _on_end_pressed() -> void:
 	ConnectionManager.send(
 		ConnectionManager.GameMessage.ACTIONS, {actions = [a.as_dict()], private = false}
 	)
+
+
+func _on_hammer_btn_pressed() -> void:
+	match state:
+		State.IDLE when my_data.hammer_uses > 0:
+			state = State.HAMMER
+		State.HAMMER:
+			state = State.IDLE
+		_:
+			pass
 
 
 func _on_active_pressed(card: Card, sigil_idx: int) -> void:

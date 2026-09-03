@@ -167,6 +167,10 @@ func on_energy_refresh(player_id: String) -> void:
 func on_card_sacrificed(card: Card) -> void:
 	return
 
+## Called after [UseHammerAction] resolved.  This means the card is still alive and on the board.
+func on_card_hammered(card: Card) -> void:
+	return
+
 
 ## Called whenever an action is added to the stack. If this return a non empty array the top action
 ## of the stack is replace with the returned value.
@@ -316,23 +320,7 @@ func get_config(config_name: String, default: Variant) -> Variant:
 
 func request_target(
 	player_id: String,
+	can_cancel := false,
 	filter := func(_slot: BoardManager.Slot) -> bool: return true,
 ) -> BoardManager.Slot:
-	var slot: BoardManager.Slot = null
-	if player_id == Global.uuid:
-		fight_manager.state = FightManager.State.TARGET
-		while slot == null or not filter.call(slot):
-			slot = await fight_manager.target_acquired
-		fight_manager.state = FightManager.State.IDLE
-		var p := oppose_pos(slot.pos)
-		ConnectionManager.send(
-			ConnectionManager.GameMessage.TARGET_ACQUIRED, {pos = {x = p.x, y = p.y}}
-		)
-	else:
-		var packet: Dictionary = {}
-		while packet == {} or packet.type != ConnectionManager.GameMessage.TARGET_ACQUIRED:
-			packet = await ConnectionManager.recieved_packet
-		slot = fight_manager.board_manager.get_slot(
-			Vector2i(packet.pos.x as int, packet.pos.y as int)
-		)
-	return slot
+	return await fight_manager.request_target(player_id, can_cancel, filter)
