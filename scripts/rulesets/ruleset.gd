@@ -190,6 +190,8 @@ class Trait:
 	static var UNHAMMERABLE := _basic_config("unhammerable")
 	static var BLOODLESS := _basic_config("bloodless")
 	static var BONELESS := _basic_config("boneless")
+	static var ANT := _basic_config("ant")
+	static var GREEN_MOX := _basic_config("green_mox")
 
 	func _init(trait_name: String, trait_config: Dictionary) -> void:
 		name = trait_name
@@ -510,7 +512,11 @@ var rarities: Dictionary[String, Rarity] = {
 }
 var default_rarity: Rarity = Rarity.COMMON_RARITY
 var traits: Dictionary[String, Trait] = {
-	unhammerable = Trait.UNHAMMERABLE, bloodless = Trait.BLOODLESS, boneless = Trait.BONELESS
+	unhammerable = Trait.UNHAMMERABLE,
+	bloodless = Trait.BLOODLESS,
+	boneless = Trait.BONELESS,
+	ant = Trait.ANT,
+	green_mox = Trait.GREEN_MOX
 }
 var temples: Dictionary[String, Temple] = {
 	beast = Temple.BEAST,
