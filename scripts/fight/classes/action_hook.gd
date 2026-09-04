@@ -66,13 +66,6 @@ func pre_card_strike(striker: Card, victim_slot: BoardManager.Slot, to_face: boo
 	return
 
 
-## Called after [CardAttackAction] resolved. This will dictate what [CardStrikeAction] the card will
-## do whatever strike group this function spit out. If by the end of all the strike sigils activation
-## the card still have no [StrikeGroup] the default center strike is issued.
-func on_card_attacked(card: Card) -> Array[CardAttackAction.StrikeGroup]:
-	return []
-
-
 func on_card_strike(striker: Card, pos: Vector2i, to_face: bool) -> void:
 	pass
 

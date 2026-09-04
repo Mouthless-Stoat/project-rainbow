@@ -61,8 +61,14 @@ func static_ability(is_reset: bool) -> void:
 func replace_action(type: Action.Type, act: Action) -> Array[Action]:
 	return []
 
+## Called after [CardAttackAction] resolved. This will dictate what [CardStrikeAction] the card will
+## do whatever strike group this function spit out. If by the end of all the strike sigils activation
+## the card still have no [StrikeGroup] the default center strike is issued.
+func on_card_attacked(card: Card) -> Array[CardAttackAction.StrikeGroup]:
+	return []
 
 @warning_ignore_restore("unused_parameter")
+
 
 # --- Helper function and utils ---
 
