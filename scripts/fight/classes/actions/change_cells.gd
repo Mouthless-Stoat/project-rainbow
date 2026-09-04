@@ -19,8 +19,8 @@ func resolve(fight_manager: FightManager) -> void:
 	data.cells += amount
 	if amount < 0:
 		data.energy += abs(amount)
-	await fight_manager._activate_sigils(
-		func(sigil: Sigil) -> void: sigil.on_cell_changed(amount, player_id)
+	await fight_manager._activate_hooks(
+		func(hook: ActionHook) -> void: hook.on_cell_changed(amount, player_id)
 	)
 
 
