@@ -133,10 +133,19 @@ var slot_attack_buf: int = 0:
 		_update_buf()
 
 
-## Syncronize [member attack] by combining [member attack_buf], [member slot_attack_buf] and
-## [member card_data]
+## Syncronize [member attack] by combining [member attack_buf], [member slot_attack_buf],
+## [member card_data] and buff from special attack
 func _update_buf() -> void:
-	attack = card_data.attack + slot_attack_buf + attack_buf
+	attack = (
+		card_data.attack
+		+ slot_attack_buf
+		+ attack_buf
+		+ (
+			0
+			if (_special_attack == null or not _special_attack._should_be_active())
+			else _special_attack.attack_value()
+		)
+	)
 
 
 # These are just extracted out of the card_data for type safety
@@ -337,7 +346,7 @@ func redraw_card() -> void:
 		_special_attack.position = sp_atk_rest_pos
 		_special_attack.self_modulate = Color.WHITE
 
-		if zone == Zone.BOARD or (zone == Zone.HAND and _special_attack.active_in_hand()):
+		if _special_attack._should_be_active():
 			_special_attack.position += Vector2.UP * 8
 			_special_attack.self_modulate.a = 0.5
 
