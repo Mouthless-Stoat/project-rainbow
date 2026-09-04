@@ -131,8 +131,8 @@ func end_game(is_victory: bool) -> void:
 	%Surrender.visible = false
 	%Blocker.visible = true
 	%ResultPopup.visible = true
-	if is_victory: %ResultPopup/Blocker1/Result.text = "You Win"
-	else: %ResultPopup/Blocker1/Result.text = "You Lose"
+	if is_victory: %Result.text = "You Win"
+	else: %Result.text = "You Lose"
 	$Blocker/CenterContainer/WaitingOpp.visible = false
 
 

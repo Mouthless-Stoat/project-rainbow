@@ -29,6 +29,7 @@ layout_mode = 2
 
 [node name="CloseBtn" type="Button" parent="VBoxContainer/MarginContainer" unique_id=853486494 node_paths=PackedStringArray("ui")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"TitleButton"
