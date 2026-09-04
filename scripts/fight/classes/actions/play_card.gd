@@ -54,7 +54,7 @@ func resolve(fight_manager: FightManager) -> void:
 	# in that case you can use fight_manager._no_activation() as the activation. If you don't
 	# include this your stack will stall indefinitely.
 	await fight_manager._activate_hooks(
-		func(sigils: Sigil) -> void: sigils.on_card_played(card, pos, placer_type, placer_id)
+		func(hook: ActionHook) -> void: hook.on_card_played(card, pos, placer_type, placer_id)
 	)
 
 
