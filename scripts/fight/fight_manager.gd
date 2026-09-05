@@ -127,10 +127,13 @@ func _start_fight(deck_dict: Dictionary) -> void:
 	await _draw_starting_hand()
 
 
-func lose_game() -> void:
+func end_game(is_victory: bool) -> void:
+	%Surrender.visible = false
 	%Blocker.visible = true
 	%ResultPopup.visible = true
-	$Blocker/CenterContainer/Label.visible = false
+	if is_victory: %Result.text = "You Win"
+	else: %Result.text = "You Lose"
+	$Blocker/CenterContainer/WaitingOpp.visible = false
 
 
 func _draw_starting_hand() -> void:
@@ -347,6 +350,20 @@ func _on_active_pressed(card: Card, sigil_idx: int) -> void:
 		ConnectionManager.GameMessage.ACTIONS, {actions = [a.as_dict()], private = false}
 	)
 	await _resolve_stack()
+
+
+func _on_back_menu_pressed() -> void:
+#	WARNING : WORK TO BE DONE
+#	- Scene cleaning to be done.
+	
+	visible = false
+
+
+func _on_surrender_pressed() -> void:
+#	WARNING : WORK TO BE DONE
+#	- Notification to opponent necessary.
+	
+	_on_back_menu_pressed()
 
 
 # --- STACK SHIT ---
