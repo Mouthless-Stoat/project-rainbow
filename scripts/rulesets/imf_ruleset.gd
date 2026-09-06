@@ -32,8 +32,10 @@ func _init(ruleset: Dictionary) -> void:
 			traits.append("bloodless")
 		if "sigils" in old_data and "Boneless" in old_data.sigils:
 			traits.append("boneless")
-		if "ant" in old_data.name.to_lower():
+		if "Ant" in old_data.name:
 			traits.append("ant")
+		if "mox" in old_data.name.to_lower():
+			traits.append("mox")
 
 		var temple := "beast"
 		if "blood_cost" in old_data:
@@ -59,7 +61,7 @@ func _init(ruleset: Dictionary) -> void:
 			elif "Transformer" in old_data.sigils:
 				metadata.transform_form = old_data.evolution
 
-		var sp_atk_map := {"ant": "ant", "mox": "emerald", "Bell": "bell", "Hand": "hand"}
+		var sp_atk_map := {"ant": "ant", "mox": "mox", "Bell": "bell", "Hand": "hand"}
 		# various int conversion are due to json defaulting to float
 		cards[card.name] = (CardData.new(
 			{
