@@ -28,5 +28,5 @@ func on_card_played(
 				new_data.sigils.append(sigil)
 				if len(new_data.sigils) >= max_sigils():
 					break
-		remove_card(friendly.id)
+		kill_card(friendly.id)
 	transform_card(played_card.id, new_data)
