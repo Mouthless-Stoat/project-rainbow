@@ -10,10 +10,7 @@ func on_card_damaged(
 	var victim_pos := get_pos(victim.id)
 	if controller_id() != controller_id(victim_pos):
 		return
-	print(victim.card_data.name)
-	print("vs")
-	print(friend_data().name)
-	if victim.card_data.name != friend_data().name:
 
+	if victim.card_data.name != friend_data().name:
 		return
 	add_action(PreCardStrikeAction.new(attached_card.id, oppose_pos(victim_pos), false))
