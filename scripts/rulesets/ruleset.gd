@@ -191,6 +191,7 @@ class Trait:
 	static var BLOODLESS := _basic_config("bloodless")
 	static var BONELESS := _basic_config("boneless")
 	static var ANT := _basic_config("ant")
+	static var MOX := _basic_config("mox")
 
 	func _init(trait_name: String, trait_config: Dictionary) -> void:
 		name = trait_name
@@ -515,6 +516,7 @@ var traits: Dictionary[String, Trait] = {
 	bloodless = Trait.BLOODLESS,
 	boneless = Trait.BONELESS,
 	ant = Trait.ANT,
+	mox = Trait.MOX,
 }
 var temples: Dictionary[String, Temple] = {
 	beast = Temple.BEAST,

@@ -68,11 +68,13 @@ enum Type {
 	TIP_SCALE,
 	## Action representing killing a card.
 	KILL_CARD,
+	## Action representing removing a card without giving bones, sending to graveyard, or activating on_card_perished
+	REMOVE_CARD,
 	## Action representing a change in bone tokens, be it losing, spending or gaining bone tokens.
 	CHANGE_BONES,
 	## Action representing a change in energy cells, be it losing, spending or gaining energy cells.
 	CHANGE_CELLS,
-	## Action represrnting a chaneg in energy, be it losing, spending or gaining energy.
+	## Action represrnting a change in energy, be it losing, spending or gaining energy.
 	CHANGE_ENERGY,
 	## Action representing the refresh in energy. Basically just set the energy back to the cells
 	## amount, this does not use [ChangeEnergyAction]

@@ -117,7 +117,9 @@ func change_stats(card_id: String, add_power: int, add_health: int) -> void:
 func kill_card(card_id: String) -> void:
 	add_action(KillCardAction.new(card_id))
 
-
+func remove_card(card_id: String) -> void:
+	add_action(RemoveCardAction.new(card_id))
+	
 func damage_card(
 	victim_id: String, amount: int, attacker_type: Action.IDType, attacker_id: String
 ) -> void:
