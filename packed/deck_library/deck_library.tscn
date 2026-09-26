@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dk8xql1dsosn8" path="res://packed/deck_library/deck_library.gd" id="1_i8dw4"]
 [ext_resource type="PackedScene" uid="uid://dwhmym7riy2eo" path="res://prefab/separator.tscn" id="2_77xgr"]
 [ext_resource type="Texture2D" uid="uid://beioiqusnxhs3" path="res://asset/ruleset_icon/plus.png" id="3_0f3h0"]
+[ext_resource type="Texture2D" uid="uid://dg3brb3mwaptj" path="res://asset/ui/cross.png" id="3_wnwq6"]
 [ext_resource type="Texture2D" uid="uid://dooq4so256ueh" path="res://asset/ruleset_icon/clipboard.png" id="4_k8i4a"]
 [ext_resource type="Texture2D" uid="uid://du2ktv20mkxyp" path="res://asset/ruleset_icon/file.png" id="5_4qqor"]
 [ext_resource type="Script" uid="uid://ccuyd8bprftvj" path="res://scripts/utils/ui_control_btn.gd" id="6_u1fnd"]
@@ -29,8 +30,24 @@ theme_override_constants/separation = 0
 [node name="Separator" parent="VBoxContainer" unique_id=444231581 instance=ExtResource("2_77xgr")]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer" unique_id=1948926342]
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer" unique_id=789711626]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CloseBtn" type="Button" parent="VBoxContainer/MarginContainer2" unique_id=795302581 node_paths=PackedStringArray("ui")]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"TitleButton"
+theme_override_font_sizes/font_size = 32
+icon = ExtResource("3_wnwq6")
+script = ExtResource("6_u1fnd")
+ui = NodePath("../../..")
+make_visible = false
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer2" unique_id=1948926342]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 1
 theme_override_font_sizes/font_size = 32
 text = "Deck Library"
 horizontal_alignment = 1
