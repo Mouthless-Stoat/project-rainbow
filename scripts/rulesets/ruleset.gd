@@ -191,6 +191,7 @@ class Trait:
 	static var BLOODLESS := _basic_config("bloodless")
 	static var BONELESS := _basic_config("boneless")
 	static var ANT := _basic_config("ant")
+	static var CONDUCTIVE := _basic_config("conductive")
 
 	func _init(trait_name: String, trait_config: Dictionary) -> void:
 		name = trait_name
@@ -477,7 +478,7 @@ static var RULESET_SCHEMA: Dictionary[String, Dictionary] = {
 				schema = {card = {types = [TYPE_STRING]}, amount = {types = [TYPE_INT]}}
 			},
 			# only for draft
-			draftable_cards = {types = [TYPE_ARRAY], sub_type = TYPE_STRING},
+			draftable_cards = {types = [TYPE_ARRAY], sub_type = TYPE_STRING, default = []},
 			# only for category
 			decks =
 			{
@@ -494,7 +495,7 @@ static var RULESET_SCHEMA: Dictionary[String, Dictionary] = {
 						sub_type = TYPE_DICTIONARY,
 						schema = {card = {types = [TYPE_STRING]}, amount = {types = [TYPE_INT]}}
 					},
-					draftable_cards = {types = [TYPE_ARRAY], sub_type = TYPE_STRING},
+					draftable_cards = {types = [TYPE_ARRAY], sub_type = TYPE_STRING, default = []},
 				}
 			}
 		}
@@ -515,6 +516,7 @@ var traits: Dictionary[String, Trait] = {
 	bloodless = Trait.BLOODLESS,
 	boneless = Trait.BONELESS,
 	ant = Trait.ANT,
+	conductive = Trait.CONDUCTIVE
 }
 var temples: Dictionary[String, Temple] = {
 	beast = Temple.BEAST,

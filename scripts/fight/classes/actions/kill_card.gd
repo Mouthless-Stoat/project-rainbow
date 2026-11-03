@@ -35,7 +35,6 @@ func resolve(fight_manager: FightManager) -> void:
 		sigil.static_ability(true)
 	fight_manager.card_manager.move_card(card_id, Card.Zone.GRAVEYARD)
 	slot.card = null
-	card.visible = false
 
 
 func as_dict() -> Dictionary:

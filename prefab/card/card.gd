@@ -116,7 +116,7 @@ var card_data: Ruleset.CardData:
 var zone := Zone.LIMBO:
 	set(new):
 		zone = new
-		visible = zone != Zone.LIMBO
+		visible = zone not in [Zone.LIMBO, Zone.GRAVEYARD]
 		%CostContainer.visible = zone != Zone.BOARD
 		redraw_card()
 var id := Global.gen_id()

@@ -35,7 +35,7 @@ const CLIENT_CONNECTED = "client_connected"
 
 const ERR = "error"
 
-enum GameMessage { START_GAME, NEW_CARD, ACTIONS, REPLACEMENTS, TARGET_ACQUIRED }
+enum GameMessage { START_GAME, NEW_CARD, ACTIONS, REPLACEMENTS, TARGET_ACQUIRED, DISCARD_ACQUIRED }
 
 var last_packet: Dictionary
 var socket := WebSocketPeer.new()

@@ -77,6 +77,12 @@ text = "Scale:"
 layout_mode = 2
 text = "Scale:"
 
+[node name="End" type="Button" parent="VBoxContainer/HBoxContainer2/LeftUI" unique_id=1826553701]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "END"
+
 [node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/HBoxContainer2" unique_id=1161575921]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -105,6 +111,33 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.5
 
+[node name="ExtraContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer" unique_id=2103448984]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/ExtraContainer" unique_id=1465205934]
+layout_mode = 2
+
+[node name="GYBtn" type="Button" parent="VBoxContainer/HBoxContainer/ExtraContainer/VBoxContainer" unique_id=746663873]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 32
+text = "GY"
+
+[node name="ExileBtn" type="Button" parent="VBoxContainer/HBoxContainer/ExtraContainer/VBoxContainer" unique_id=618781833]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 32
+text = "Exile"
+
+[node name="HandManager" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=366767316]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(507, 161)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("3_1bvp3")
+
 [node name="DecksContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer" unique_id=1517189619]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -123,18 +156,6 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 32
 text = "Side"
-
-[node name="HandManager" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=366767316]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(507, 161)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("3_1bvp3")
-
-[node name="End" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1826553701]
-layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="CardsManager" type="Control" parent="." unique_id=974347671]
 unique_name_in_owner = true
@@ -196,9 +217,9 @@ grow_horizontal = 0
 text = "Surrender"
 
 [connection signal="stack_resolved" from="." to="CardsManager" method="_on_fight_stack_resolved"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/LeftUI/End" to="." method="_on_end_pressed"]
 [connection signal="slot_selected" from="VBoxContainer/HBoxContainer2/CenterContainer/BoardManager" to="." method="_on_slot_selected"]
 [connection signal="card_selected" from="VBoxContainer/HBoxContainer/HandManager" to="." method="_on_card_selected"]
 [connection signal="card_unselected" from="VBoxContainer/HBoxContainer/HandManager" to="." method="_on_card_unselected"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/End" to="." method="_on_end_pressed"]
 [connection signal="pressed" from="Blocker/CenterContainer/ResultPopup/BackMenu" to="." method="_on_back_menu_pressed"]
 [connection signal="pressed" from="Surrender" to="." method="_on_surrender_pressed"]
