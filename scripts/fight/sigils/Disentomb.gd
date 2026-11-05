@@ -2,7 +2,7 @@ extends Sigil
 
 
 func bone_cost() -> int:
-	return get_config("bone_gun_cost", 1)
+	return get_config("Disentomb_cost", 1)
 
 
 func corpse_data() -> Ruleset.CardData:

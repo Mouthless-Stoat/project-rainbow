@@ -8,4 +8,4 @@ func on_card_perished(card: Card) -> void:
 	if card != attached_card:
 		return
 	
-	TipScaleAction.new(byte_damage() * (-1 if card.pos.y == BoardManager.Row.MINE else 1))
+	add_action(TipScaleAction.new(byte_damage() * (-1 if controller_id() == Global.uuid else 1)))

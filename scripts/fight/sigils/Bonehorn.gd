@@ -2,10 +2,12 @@ extends Sigil
 
 
 func energy_cost() -> int:
-	return get_config("energy_sniper_cost", 1)
+	return get_config("energy_horn_cost", 1)
 
-func sniper_damage() -> int:
-	return get_config("energy_sniper_damage", 1)
+
+func bone_horn_yield() -> int:
+	return get_config("bone_horn_yield", 3) as int
+	
 
 func is_active_sigil() -> bool:
 	return true
@@ -21,9 +23,5 @@ func on_sigil_activate(
 	if card != attached_card or sigil != self:
 		return
 
-	var slot := await request_target(
-		controller_id(), func(s: BoardManager.Slot) -> bool: return s.pos.y == BoardManager.Row.OPP
-	)
 	add_action(ChangeEnergyAction.new(-energy_cost(), controller_id()))
-	
-	damage_card(card.id, sniper_damage(), Action.IDType.CARD, slot.card.id)
+	change_bone(bone_horn_yield(), controller_id())

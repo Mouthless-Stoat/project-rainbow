@@ -11,5 +11,5 @@ func static_ability(is_reset: bool) -> void:
 		
 	else:
 		var oppose_card := fight_manager.board_manager.get_slot(oppose_pos(get_pos()))
-		if oppose_card == null:
+		if oppose_card.is_empty():
 			attached_card.attack_buf += scopophobic_buff()
