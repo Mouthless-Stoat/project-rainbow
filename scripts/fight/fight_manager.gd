@@ -127,10 +127,13 @@ func _start_fight(deck_dict: Dictionary) -> void:
 	await _draw_starting_hand()
 
 
-func lose_game() -> void:
+func end_game(is_victory: bool) -> void:
+	%Surrender.visible = false
 	%Blocker.visible = true
 	%ResultPopup.visible = true
-	$Blocker/CenterContainer/Label.visible = false
+	if is_victory: %Result.text = "You Win"
+	else: %Result.text = "You Lose"
+	$Blocker/CenterContainer/WaitingOpp.visible = false
 
 
 func _draw_starting_hand() -> void:
@@ -226,7 +229,7 @@ func _on_slot_selected(slot: BoardManager.Slot) -> void:
 		if card.costs.bone != 0:
 			actions.push_front(ChangeBonesAction.new(-card.costs.bone as int, Global.uuid))
 		if card.costs.cell != 0:
-			actions.push_front(ChangeCellsAction.new(-card.costs.cell as int, Global.uuid))
+			actions.push_front(ChangeCellsAction.new(-card.costs.cell as int, Global.uuid, false))
 		if card.costs.energy != 0:
 			actions.push_front(ChangeEnergyAction.new(-card.costs.energy as int, Global.uuid))
 
@@ -349,6 +352,20 @@ func _on_active_pressed(card: Card, sigil_idx: int) -> void:
 	await _resolve_stack()
 
 
+func _on_back_menu_pressed() -> void:
+#	WARNING : WORK TO BE DONE
+#	- Scene cleaning to be done.
+	
+	visible = false
+
+
+func _on_surrender_pressed() -> void:
+#	WARNING : WORK TO BE DONE
+#	- Notification to opponent necessary.
+	
+	_on_back_menu_pressed()
+
+
 # --- STACK SHIT ---
 
 ## The top of the stack is at 0, this shouldn't be modify directly but instead through
@@ -412,6 +429,7 @@ func _resolve_stack() -> void:
 				await ConnectionManager.recieved_packet
 		randomize()
 		action.resolve(self)
+		await _activate_hooks(func(hook: ActionHook) -> void: hook.on_any_action_resolved(action.action_type() ,action))
 		while _opp_private.is_empty():
 			await ConnectionManager.recieved_packet
 		var private_trigger: Array[Action]
@@ -504,6 +522,7 @@ func _get_replacement(action: Action) -> Array[Action]:
 	return replacement
 
 
+## Handle any static ability
 func handle_static() -> void:
 	var sigils: Array[Sigil] = []
 	for card in _public_activation_order():
@@ -523,16 +542,18 @@ func _no_activation() -> void:
 	ConnectionManager.send(ConnectionManager.GameMessage.ACTIONS, {actions = [], private = true})
 
 
-func _activate_sigils(callback: Callable) -> void:
-	await _activate_sigil_on_cards(_public_activation_order(), callback)
-	var private := await _activate_sigil_on_cards(_private_activation_order(), callback)
+## The [param callback]'s signature should be `func(ActionHook) -> void`
+func _activate_hooks(callback: Callable) -> void:
+	await _activate_hooks_on_cards(_public_activation_order(), callback)
+	var private := await _activate_hooks_on_cards(_private_activation_order(), callback)
 	ConnectionManager.send(
 		ConnectionManager.GameMessage.ACTIONS,
 		{actions = private.map(func(a: Action) -> Dictionary: return a.as_dict()), private = true}
 	)
 
 
-func _activate_sigil_on_cards(cards: Array[Card], callback: Callable) -> Array[Action]:
+## The [param callback]'s signature should be `func(ActionHook) -> void`
+func _activate_hooks_on_cards(cards: Array[Card], callback: Callable) -> Array[Action]:
 	var out: Array[Action] = []
 	for card in cards:
 		for sigil: Sigil in card._sigils:
@@ -547,6 +568,9 @@ func _activate_sigil_on_cards(cards: Array[Card], callback: Callable) -> Array[A
 			await callback.call(sigil)
 			_push_actions(sigil._stack)
 			out.append_array(sigil._stack)
+
+			if card._special_attack != null:
+				await callback.call(card._special_attack)
 	return out
 
 

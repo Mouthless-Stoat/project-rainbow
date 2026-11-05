@@ -79,13 +79,11 @@ func _on_copy_code_btn_pressed() -> void:
 
 
 func _on_end_btn_pressed() -> void:
-	visible = false
 	if ConnectionManager.is_host:
 		ConnectionManager.close_room()
-		_on_room_closed()
 	else:
 		ConnectionManager.leave_room()
-		_on_room_closed()
+	_on_room_closed()
 
 
 func _on_start_btn_pressed() -> void:

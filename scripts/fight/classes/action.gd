@@ -29,6 +29,8 @@ enum Type {
 	DRAW_CARD,
 	## Action representing playing a card.
 	PLAY_CARD,
+	## Action representing discarding the entire hand of a player.
+	DISCARD_HAND,
 	## Action representing creating a new token, this token will just float around in limbo.
 	## You need another action to do something with this token.
 	CREATE_TOKEN,
